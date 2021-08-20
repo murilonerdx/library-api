@@ -26,22 +26,22 @@ public class PersonController {
         this.service = service;
     }
 
-    @GetMapping
+    @GetMapping(produces = {"application/json", "application/xml"})
     public List<PersonDTO> findAll() {
         return service.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value= "/{id}", produces = {"application/json", "application/xml"})
     public PersonDTO findById(@PathVariable("id") Long id) {
         return service.findById(id);
     }
 
-    @PostMapping
+    @PostMapping(produces = {"application/json", "application/xml"}, consumes = {"application/json", "application/xml"})
     public PersonDTO create(@RequestBody PersonDTO person) {
         return service.create(person);
     }
 
-    @PutMapping
+    @PutMapping(produces = {"application/json", "application/xml"}, consumes = {"application/json", "application/xml"})
     public PersonDTO update(@RequestBody PersonDTO person) {
         return service.update(person);
     }
