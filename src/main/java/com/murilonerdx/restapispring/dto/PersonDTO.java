@@ -1,13 +1,13 @@
 package com.murilonerdx.restapispring.dto;
 
+import com.github.dozermapper.core.Mapping;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import org.springframework.hateoas.RepresentationModel;
 
 @Data
-public class PersonDTO {
+public class PersonDTO extends RepresentationModel<PersonDTO> {
+    @Mapping("id")
     private Long id;
     private String firstName;
     private String lastName;

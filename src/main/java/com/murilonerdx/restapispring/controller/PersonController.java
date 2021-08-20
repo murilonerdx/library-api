@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping("/api/person")
 public class PersonController {
@@ -24,12 +27,19 @@ public class PersonController {
 
     @GetMapping(produces = { "application/json", "application/xml", "application/x-yaml" })
     public List<PersonDTO> findAll() {
-        return service.findAll();
+        List<PersonDTO> persons = service.findAll();
+        for(PersonDTO pdto : persons){
+            Long id = pdto.getId();
+            pdto.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+        }
+        return persons;
     }
 
     @GetMapping(value = "/{id}", produces = { "application/json", "application/xml", "application/x-yaml" })
     public PersonDTO findById(@PathVariable("id") Long id) {
-        return service.findById(id);
+        PersonDTO person = service.findById(id);
+        person.add(linkTo(methodOn(PersonController.class).findAll()).withRel("List of the Persons"));
+        return person;
     }
 
     @PostMapping(produces = { "application/json", "application/xml", "application/x-yaml" },
