@@ -1,6 +1,6 @@
 package com.murilonerdx.restapispring.controller;
 
-import com.murilonerdx.restapispring.model.Person;
+import com.murilonerdx.restapispring.dto.PersonDTO;
 import com.murilonerdx.restapispring.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,26 +19,30 @@ import java.util.List;
 @RequestMapping("/person")
 public class PersonController {
 
+    private final PersonService service;
+
     @Autowired
-    private PersonService service;
+    public PersonController(PersonService service) {
+        this.service = service;
+    }
 
     @GetMapping
-    public List<Person> findAll() {
+    public List<PersonDTO> findAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Person findById(@PathVariable("id") Long id) {
+    public PersonDTO findById(@PathVariable("id") Long id) {
         return service.findById(id);
     }
 
     @PostMapping
-    public Person create(@RequestBody Person person) {
+    public PersonDTO create(@RequestBody PersonDTO person) {
         return service.create(person);
     }
 
     @PutMapping
-    public Person update(@RequestBody Person person) {
+    public PersonDTO update(@RequestBody PersonDTO person) {
         return service.update(person);
     }
 

@@ -2,12 +2,10 @@ package com.murilonerdx.restapispring.model;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
+@Entity
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
