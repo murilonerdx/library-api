@@ -3,10 +3,12 @@ package com.murilonerdx.restapispring.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
-public class Person {
+@Table(name="person")
+public class Person implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

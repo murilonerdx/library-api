@@ -1,7 +1,7 @@
 package com.murilonerdx.restapispring.controller;
 
-import com.murilonerdx.restapispring.dto.PersonDTO;
-import com.murilonerdx.restapispring.service.PersonService;
+import com.murilonerdx.restapispring.dto.BookDTO;
+import com.murilonerdx.restapispring.service.BookService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,56 +13,57 @@ import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@Api(tags = "PersonEndpoint")
+@Api(tags = "BookEndpoint")
 @RestController
-@RequestMapping("/api/person")
-public class PersonController {
+@RequestMapping("/api/book")
+public class BookController {
 
     @Autowired
-    private PersonService service;
+    private BookService service;
 
-    @ApiOperation(value = "Find all persons")
+    @ApiOperation(value = "Find all books")
     @GetMapping(produces = {"application/json", "application/xml", "application/x-yaml"})
-    public List<PersonDTO> findAll() {
-        List<PersonDTO> persons = service.findAll();
-        persons
+    public List<BookDTO> findAll() {
+        List<BookDTO> books = service.findAll();
+        books
                 .forEach(p -> p.add(
                                 linkTo(methodOn(BookController.class).findById(p.getId())).withSelfRel()
                         )
                 );
-        return persons;
+        return books;
     }
 
-    @ApiOperation(value = "Find a specific person by your ID")
+    @ApiOperation(value = "Find a specific book by your ID")
     @GetMapping(value = "/{id}", produces = {"application/json", "application/xml", "application/x-yaml"})
-    public PersonDTO findById(@PathVariable("id") Long id) {
-        PersonDTO person = service.findById(id);
-        person.add(linkTo(methodOn(PersonController.class).findAll()).withRel("List of the Persons"));
-        return person;
+    public BookDTO findById(@PathVariable("id") Long id) {
+        BookDTO bookDTO = service.findById(id);
+        bookDTO.add(linkTo(methodOn(BookController.class).findById(id)).withSelfRel());
+        return bookDTO;
     }
 
-    @ApiOperation(value = "Create a new person")
+    @ApiOperation(value = "Create a new book")
     @PostMapping(produces = {"application/json", "application/xml", "application/x-yaml"},
             consumes = {"application/json", "application/xml", "application/x-yaml"})
-    public PersonDTO create(@RequestBody PersonDTO person) {
-        return service.create(person);
+    public BookDTO create(@RequestBody BookDTO book) {
+        BookDTO bookDTO = service.create(book);
+        bookDTO.add(linkTo(methodOn(BookController.class).findById(bookDTO.getId())).withSelfRel());
+        return bookDTO;
     }
 
-    @ApiOperation(value = "Update a specific person")
+    @ApiOperation(value = "Update a specific book")
     @PutMapping(produces = {"application/json", "application/xml", "application/x-yaml"},
             consumes = {"application/json", "application/xml", "application/x-yaml"})
-    public PersonDTO update(@RequestBody PersonDTO person) {
-        PersonDTO personDTO = service.update(person);
-        personDTO.add(linkTo(methodOn(PersonController.class).findById(personDTO.getId())).withSelfRel());
-        return personDTO;
+    public BookDTO update(@RequestBody BookDTO book) {
+        BookDTO bookDTO = service.update(book);
+        bookDTO.add(linkTo(methodOn(BookController.class).findById(bookDTO.getId())).withSelfRel());
+        return bookDTO;
     }
 
-    @ApiOperation(value = "Delete a specific person by your ID")
+    @ApiOperation(value = "Delete a specific book by your ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         service.delete(id);
         return ResponseEntity.ok().build();
     }
-
 
 }
