@@ -8,11 +8,12 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication(exclude = JpaRepositoriesAutoConfiguration.class)
 @EntityScan(basePackages = {"com.murilonerdx.restapispring.model"})
 @EnableJpaRepositories(basePackages= {"com.murilonerdx.restapispring.repository", "com.murilonerdx.restapispring.service"})
-@EnableAutoConfiguration
+@EnableWebMvc
 public class RestApiSpringApplication {
 
     public static void main(String[] args) {
