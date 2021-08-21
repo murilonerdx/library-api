@@ -16,6 +16,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Api(tags = "BookEndpoint")
 @RestController
 @RequestMapping("/api/book")
+//@CrossOrigin
 public class BookController {
 
     @Autowired

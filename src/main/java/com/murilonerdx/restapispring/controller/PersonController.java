@@ -16,6 +16,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Api(tags = "PersonEndpoint")
 @RestController
 @RequestMapping("/api/person")
+//@CrossOrigin
 public class PersonController {
 
     @Autowired
