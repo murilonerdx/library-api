@@ -33,6 +33,11 @@ public class PersonService {
         return page.map(this::convertToPersonDTO);
     }
 
+    public Page<PersonDTO> findPersonByName(String firstName, Pageable pageable) {
+        var page = repository.findPersonByName(firstName, pageable);
+        return page.map(this::convertToPersonDTO);
+    }
+
     private PersonDTO convertToPersonDTO(Person entity){
         return DozerConverter.parseObject(entity, PersonDTO.class);
     }

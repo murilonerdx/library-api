@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,19 +27,50 @@ public class PersonController {
     @Autowired
     private PersonService service;
 
-    @ApiOperation(value = "Find all persons")
-    @GetMapping(produces = {"application/json", "application/xml", "application/x-yaml"})
-    public Page<PersonDTO> findAll(@RequestParam(value="page", defaultValue = "0") int page,
-                                   @RequestParam(value="limit", defaultValue="12") int limit,
-                                   @RequestParam(value="direction", defaultValue="asc") String direction) {
+    @ApiOperation(value = "Find all people" )
+    @GetMapping(produces = { "application/json", "application/xml", "application/x-yaml" })
+    public ResponseEntity<?> findAll(
+            @RequestParam(value="page", defaultValue = "0") int page,
+            @RequestParam(value="limit", defaultValue = "12") int limit,
+            @RequestParam(value="direction", defaultValue = "asc") String direction) {
+
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
-        var persons = service.findAll(PageRequest.of(page, limit, Sort.by(sortDirection,"firstName")));
+
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "firstName"));
+
+        Page<PersonDTO> persons =  service.findAll(pageable);
         persons
+                .stream()
                 .forEach(p -> p.add(
                                 linkTo(methodOn(PersonController.class).findById(p.getId())).withSelfRel()
                         )
                 );
-        return persons;
+
+
+        return new ResponseEntity<>(persons, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Find a specific person by name" )
+    @GetMapping(value = "/findPersonByName/{firstName}", produces = { "application/json", "application/xml", "application/x-yaml" })
+    public ResponseEntity<?> findPersonByName(
+            @PathVariable("firstName") String firstName,
+            @RequestParam(value="page", defaultValue = "0") int page,
+            @RequestParam(value="limit", defaultValue = "12") int limit,
+            @RequestParam(value="direction", defaultValue = "asc") String direction) {
+
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "firstName"));
+
+        Page<PersonDTO> persons =  service.findPersonByName(firstName, pageable);
+        persons
+                .stream()
+                .forEach(p -> p.add(
+                                linkTo(methodOn(PersonController.class).findById(p.getId())).withSelfRel()
+                        )
+                );
+
+        return new ResponseEntity<>(persons, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Find a specific person by your ID")
