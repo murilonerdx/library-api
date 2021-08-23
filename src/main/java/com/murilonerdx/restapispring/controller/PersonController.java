@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +28,10 @@ public class PersonController {
     @ApiOperation(value = "Find all persons")
     @GetMapping(produces = {"application/json", "application/xml", "application/x-yaml"})
     public List<PersonDTO> findAll(@RequestParam(value="page", defaultValue = "0") int page,
-                                   @RequestParam(value="limit", defaultValue="12") int limit) {
-        List<PersonDTO> persons = service.findAll(PageRequest.of(page, limit));
+                                   @RequestParam(value="limit", defaultValue="12") int limit,
+                                   @RequestParam(value="direction", defaultValue="asc") String direction) {
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        List<PersonDTO> persons = service.findAll(PageRequest.of(page, limit, Sort.by(sortDirection,"firstName")));
         persons
                 .forEach(p -> p.add(
                                 linkTo(methodOn(BookController.class).findById(p.getId())).withSelfRel()
@@ -37,13 +40,11 @@ public class PersonController {
         return persons;
     }
 
-    
-
     @ApiOperation(value = "Find a specific person by your ID")
     @GetMapping(value = "/{id}", produces = {"application/json", "application/xml", "application/x-yaml"})
     public PersonDTO findById(@PathVariable("id") Long id) {
         PersonDTO person = service.findById(id);
-        person.add(linkTo(methodOn(PersonController.class).findAll(0,12)).withRel("List of the Persons"));
+        person.add(linkTo(methodOn(PersonController.class).findAll(0,12, "asc")).withRel("List of the Persons"));
         return person;
     }
 
