@@ -1,16 +1,18 @@
 package com.murilonerdx.restapispring.dto;
 
-import com.github.dozermapper.core.Mapping;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.hateoas.RepresentationModel;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UploadFileResponseDTO implements Serializable {
     private String fileName;
     private String fileDownloadUri;
-    private Date fileType;
+    private String fileType;
     private long size;
+
 }
