@@ -5,6 +5,8 @@ import com.murilonerdx.restapispring.service.PersonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +26,9 @@ public class PersonController {
 
     @ApiOperation(value = "Find all persons")
     @GetMapping(produces = {"application/json", "application/xml", "application/x-yaml"})
-    public List<PersonDTO> findAll() {
-        List<PersonDTO> persons = service.findAll();
+    public List<PersonDTO> findAll(@RequestParam(value="page", defaultValue = "0") int page,
+                                   @RequestParam(value="limit", defaultValue="12") int limit) {
+        List<PersonDTO> persons = service.findAll(PageRequest.of(page, limit));
         persons
                 .forEach(p -> p.add(
                                 linkTo(methodOn(BookController.class).findById(p.getId())).withSelfRel()
@@ -34,11 +37,13 @@ public class PersonController {
         return persons;
     }
 
+    
+
     @ApiOperation(value = "Find a specific person by your ID")
     @GetMapping(value = "/{id}", produces = {"application/json", "application/xml", "application/x-yaml"})
     public PersonDTO findById(@PathVariable("id") Long id) {
         PersonDTO person = service.findById(id);
-        person.add(linkTo(methodOn(PersonController.class).findAll()).withRel("List of the Persons"));
+        person.add(linkTo(methodOn(PersonController.class).findAll(0,12)).withRel("List of the Persons"));
         return person;
     }
 

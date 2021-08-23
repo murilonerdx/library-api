@@ -6,6 +6,7 @@ import com.murilonerdx.restapispring.model.Person;
 import com.murilonerdx.restapispring.repository.PersonRepository;
 import com.murilonerdx.restapispring.util.DozerConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +27,9 @@ public class PersonService {
         return DozerConverter.parseObject(repository.save(entity), PersonDTO.class);
     }
 
-    public List<PersonDTO> findAll() {
-        return DozerConverter.parseListObjects(repository.findAll(), PersonDTO.class);
+    public List<PersonDTO> findAll(Pageable pageable) {
+        var entities = repository.findAll(pageable).getContent();
+        return DozerConverter.parseListObjects(entities, PersonDTO.class);
     }
 
     public PersonDTO findById(Long id) {
