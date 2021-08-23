@@ -9,7 +9,6 @@ import java.util.Date;
 
 @Data
 public class UploadFileResponseDTO implements Serializable {
-    @Mapping("id")
     private String fileName;
     private String fileDownloadUri;
     private Date fileType;
