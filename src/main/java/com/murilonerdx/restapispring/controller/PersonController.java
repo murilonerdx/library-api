@@ -34,7 +34,7 @@ public class PersonController {
             @RequestParam(value="limit", defaultValue = "12") int limit,
             @RequestParam(value="direction", defaultValue = "asc") String direction) {
 
-        var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
         Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "firstName"));
 
@@ -58,7 +58,7 @@ public class PersonController {
             @RequestParam(value="limit", defaultValue = "12") int limit,
             @RequestParam(value="direction", defaultValue = "asc") String direction) {
 
-        var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
         Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "firstName"));
 
