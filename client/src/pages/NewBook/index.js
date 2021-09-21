@@ -9,7 +9,7 @@ import api from "../../services/api";
 export default function NewBook(){
     const [id, setId] = useState(null);
     const [author, setAuthor] = useState('');
-    const [lauchDate, setLauchDate] = useState('');
+    const [launchDate, setLaunchDate] = useState('');
     const [price, setPrice] = useState('');
     const [title, setTitle] = useState('');
 
@@ -23,7 +23,7 @@ export default function NewBook(){
         const data = {
             title,
             author,
-            lauchDate,
+            launchDate,
             price
         }
 
@@ -51,10 +51,22 @@ export default function NewBook(){
                     </Link>
                 </section>
                 <form onSubmit={createNewBook}>
-                    <input placeholder="Title"/>
-                    <input placeholder="Author"/>
-                    <input type="date"/>
-                    <input placeholder="Price"/>
+                    <input
+                        onChange={e=> setTitle(e.target.value)}
+                        value={title}
+                        placeholder="Title"/>
+                    <input
+                        onChange={e=> setLaunchDate(e.target.value)}
+                        value={launchDate}
+                        placeholder="Author"/>
+                    <input
+                        onChange={e=> setAuthor(e.target.value)}
+                        value={title}
+                        type="date"/>
+                    <input
+                        onChange={e=> setPrice(e.target.value)}
+                        value={price}
+                        placeholder="Price"/>
 
                     <button className="button" type="submit">Add</button>
                 </form>
