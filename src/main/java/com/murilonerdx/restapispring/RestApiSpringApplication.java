@@ -1,6 +1,10 @@
 package com.murilonerdx.restapispring;
 
 import com.murilonerdx.restapispring.config.FileStorageConfig;
+import com.murilonerdx.restapispring.model.User;
+import com.murilonerdx.restapispring.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,10 +23,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableConfigurationProperties({
         FileStorageConfig.class
 })
-public class RestApiSpringApplication {
-
+public class RestApiSpringApplication{
     public static void main(String[] args) {
         SpringApplication.run(RestApiSpringApplication.class, args);
     }
-
 }

@@ -41,6 +41,7 @@ public class AuthController {
     UserRepository repository;
 
     @ApiOperation(value = "Authenticate a user by credentials")
+    @SuppressWarnings("rawtypes")
     @PostMapping(value= "/signin",produces = {"application/json", "application/xml", "application/x-yaml"},
             consumes = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<?> create(@RequestBody AccountCredentialDTO accountCredentialDTO) {

@@ -20,9 +20,10 @@ public class WebConfig implements WebMvcConfigurer{
         converters.add(new YamlJackson2HttpMessageConverter());
     }
 
-    public void addCorsMappings(CorsRegistry registry){
+    public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedMethods("GET","PUT","POST","PUT","DELETE","HEAD");
+                .allowedOrigins("http://localhost:3000", "http://localhost")
+                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT");
     }
 
     @Override
