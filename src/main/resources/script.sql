@@ -61,9 +61,9 @@ CREATE TABLE IF NOT EXISTS `users` (
     `enabled` bit(1) DEFAULT NULL
     ) ENGINE = InnoDB;
 
-INSERT INTO `users` (`user_name`, `full_name`, `password`, `account_non_expired`, `account_non_locked`
+INSERT INTO `user` (`user_name`, `full_name`, `password`, `account_non_expired`, `account_non_locked`
                     , `credentials_non_expired`, `enabled`)
-VALUES ('murilo', 'Murilo Pereira', '$2a$16$9qr2tv0HmXbHBsx.TZFjfux742wCZM32a8Wi6iBqwIqaizlHPuxHS', 1, 1
+VALUES ('murilo', 'Murilo Pereira', '$2a$12$QyF4w1FII8opXmjlEX53PuK45.a8MBQI40c7kbQ9o5y1fbUKwHrfW', 1, 1
        , 1, 1),
        ('flavio', 'Flavio Costa', '$2a$16$h4yDQCYTy62R6xrtFDWONeMH3Lim4WQuU/aj8hxW.dJJoeyvtEkhK', 1, 1
        , 1, 1);
@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS `user_permission` (
     `id_user` bigint(20) NOT NULL,
     `id_permission` bigint(20) NOT NULL
     ) ENGINE = InnoDB;
+
 
 INSERT INTO `user_permission` (`id_user`, `id_permission`) VALUES
                                                                (1, 1),

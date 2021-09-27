@@ -1,6 +1,7 @@
 package com.murilonerdx.restapispring.model;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,8 +10,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 public class User implements UserDetails, Serializable {
 
@@ -18,11 +22,15 @@ public class User implements UserDetails, Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name="user_name")
     private String username;
     private String fullName;
     private String password;
+    @Column(name="account_non_expired")
     private boolean accountNonExpired;
+    @Column(name="account_non_locked")
     private boolean isAccountNonLocked;
+    @Column(name="credentials_non_expired")
     private boolean isCredentialsNonExpired;
     private boolean enabled;
 
@@ -60,7 +68,7 @@ public class User implements UserDetails, Serializable {
 
     @Override
     public boolean isAccountNonExpired() {
-        return this.isAccountNonExpired();
+        return this.accountNonExpired;
     }
 
     @Override
@@ -76,5 +84,19 @@ public class User implements UserDetails, Serializable {
     @Override
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 562048007;
     }
 }

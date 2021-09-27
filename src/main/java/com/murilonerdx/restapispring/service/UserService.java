@@ -25,7 +25,6 @@ public class UserService implements UserDetailsService {
         this.repository = repository;
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         var user = repository.findByUsername(s);

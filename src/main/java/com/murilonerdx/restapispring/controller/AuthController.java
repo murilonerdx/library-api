@@ -1,13 +1,14 @@
 package com.murilonerdx.restapispring.controller;
 
-import com.murilonerdx.restapispring.dto.BookDTO;
-import com.murilonerdx.restapispring.exceptions.InvalidJwtAuthenticationException;
 import com.murilonerdx.restapispring.model.User;
 import com.murilonerdx.restapispring.repository.UserRepository;
 import com.murilonerdx.restapispring.security.AccountCredentialDTO;
 import com.murilonerdx.restapispring.security.JwtTokenProvider;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,12 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import static org.springframework.http.ResponseEntity.ok;
 
+@Tag(name = "Authentication Endpoint")
 @RestController
 @RequestMapping("/auth")
-@Api(tags="AuthEndpoint")
 public class AuthController {
 
     @Autowired
@@ -40,32 +40,33 @@ public class AuthController {
     @Autowired
     UserRepository repository;
 
-    @ApiOperation(value = "Authenticate a user by credentials")
+    @Operation(summary = "Authenticates a user and returns a token")
     @SuppressWarnings("rawtypes")
-    @PostMapping(value= "/signin",produces = {"application/json", "application/xml", "application/x-yaml"},
-            consumes = {"application/json", "application/xml", "application/x-yaml"})
-    public ResponseEntity<?> create(@RequestBody AccountCredentialDTO accountCredentialDTO) {
-        try{
-            String username = accountCredentialDTO.getUsername();
-            String password = accountCredentialDTO.getPassword();
+    @PostMapping(value = "/signin", produces = { "application/json", "application/xml", "application/x-yaml" },
+            consumes = { "application/json", "application/xml", "application/x-yaml" })
+    public ResponseEntity signin(@RequestBody AccountCredentialDTO data) {
+        try {
+            var username = data.getUsername();
+            var pasword = data.getPassword();
 
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            User user = repository.findByUsername(username);
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, pasword));
 
-            String token = "";
+            var user = repository.findByUsername(username);
 
-            if(user !=null){
+            var token = "";
+
+            if (user != null) {
                 token = tokenProvider.createToken(username, user.getRoles());
-            }else{
-                throw new UsernameNotFoundException("Username " + username + " not found");
+            } else {
+                throw new UsernameNotFoundException("Username " + username + " not found!");
             }
 
-            Map<Object, Object> model = new HashMap<Object, Object>();
+            Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
-            model.put("token",token);
-            return ResponseEntity.ok(model);
-        }catch(AuthenticationException e){
-            throw new BadCredentialsException("Invalid username/passowrd supplied");
+            model.put("token", token);
+            return ok(model);
+        } catch (AuthenticationException e) {
+            throw new BadCredentialsException("Invalid username/password supplied!");
         }
     }
 }
