@@ -26,7 +26,7 @@ import java.util.Map;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-@Tag(name = "Authentication Endpoint")
+@Api(tags = "AuthController")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
