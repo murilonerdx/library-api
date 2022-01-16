@@ -3,3 +3,10 @@ A desenvolver uma API RESTFul do 0 absoluto As boas práticas a se adotar ao des
 
 #Swagger Config URL
 http://localhost:8080/swagger-ui/index.html?url=/v3/api-docs#/person-controller
+
+comandos
+
+docker-compose build
+docker-compose up 
+docker-compose up -d --build 
+docker ps
