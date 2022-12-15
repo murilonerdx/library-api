@@ -1,0 +1,35 @@
+name: CRDA scan Java project 
+on:
+  push:
+  pull_request: 
+
+jobs:
+  scan:
+    name: Analyse Java project
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+
+      - name: Install CRDA cli
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          source: github
+          crda: latest
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 11
+          cache: maven
+
+      - name: CRDA Scan and upload SARIF
+        id: scan
+        uses: redhat-actions/crda@v1
+        with:
+          snyk_token: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Print Report Link
+        run: echo ${{ steps.scan.outputs.report_link }}
