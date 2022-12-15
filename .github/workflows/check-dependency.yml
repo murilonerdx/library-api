@@ -29,7 +29,7 @@ jobs:
         id: scan
         uses: redhat-actions/crda@v1
         with:
-          snyk_token: ${{ secrets.SNYK_TOKEN }}
+          snyk_token: ${{ SNYK_TOKEN }}
 
       - name: Print Report Link
         run: echo ${{ steps.scan.outputs.report_link }}
